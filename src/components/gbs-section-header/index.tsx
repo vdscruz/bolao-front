@@ -3,6 +3,7 @@ import { Row, Col, Div, Button, Text } from 'atomize';
 export default function SectionHeader() {
     return (
         <Div
+            bg="background"
             textColor="black900"
             minH="80vh"
             w="100vw"

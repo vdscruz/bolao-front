@@ -3,94 +3,83 @@ import Link from 'next/link'
 import { useKeycloak } from '@react-keycloak/ssr'
 import type { KeycloakInstance } from 'keycloak-js'
 import { ParsedToken } from '../../types/parsed-token';
+import { GbsButton } from '..';
+
+
+interface MenuProps {
+    insider?: boolean
+}
+
+function loginUrl(keycloak: KeycloakInstance) {
+    if (keycloak) {
+        window.location.href = keycloak.createLoginUrl()
+    }
+}
+
+function cadastroUrl(keycloak: KeycloakInstance) {
+    console.log('outsider')
+    if (keycloak) {
+        window.location.href = keycloak.createAccountUrl()
+    }
+}
+
+function logoutUrl(keycloak: KeycloakInstance) {
+    if (keycloak) {
+        window.location.href = keycloak.createLogoutUrl();
+    }
+}
 
 const MenuNotLogged = (keycloak: KeycloakInstance) => {
     return (<>
-        <Button
-            h="2rem"
-            p={{ x: "0.75rem" }}
-            textSize="caption"
-            textColor="black700"
-            hoverTextColor="black900"
-            bg="white"
-            m={{ r: "0.5rem" }}
-            onClick={() => {
-                if (keycloak) {
-                    window.location.href = keycloak.createLoginUrl()
-                }
-            }}>
-            Entrar
-        </Button>
-        <Button
-            h="2rem"
-            p={{ x: "0.75rem" }}
-            textSize="caption"
-            textColor="black700"
-            hoverTextColor="black900"
-            bg="gray300"
-            hoverBg="gray500"
-            m={{ r: "0.5rem" }}
-            onClick={() => {
-                if (keycloak) {
-                    window.location.href = keycloak.createAccountUrl()
-                }
-            }}
-        >
-            Cadastro
-        </Button>
+        <GbsButton type="text" text="Entrar" click={() => loginUrl(keycloak)} />
+        <GbsButton type="contained" text="Cadastro" click={() => cadastroUrl(keycloak)} />
     </>);
 }
 
 const MenuLogged = (keycloak: KeycloakInstance) => {
     return (<>
-        <Button
-            h="2rem"
-            p={{ x: "0.75rem" }}
-            textSize="caption"
-            textColor="black700"
-            hoverTextColor="black900"
-            bg="white"
-            m={{ r: "0.5rem" }}
-            onClick={() => {
-                if (keycloak) {
-                    window.location.href = keycloak.createLogoutUrl();
-                }
-            }}>
-            Sair
-        </Button>
-        <Link href="/app/profile/">
-            <Button
-                h="2rem"
-                p={{ x: "0.75rem" }}
-                textSize="caption"
-                textColor="black700"
-                hoverTextColor="black900"
-                bg="gray300"
-                hoverBg="gray500"
-                m={{ r: "0.5rem" }}
-
-            >
-                Administração
-            </Button>
+        <GbsButton type="text" text="Sair" click={() => logoutUrl(keycloak)} />
+        <Link href="/app/perfil/">
+            <a>
+                <GbsButton type="contained" text="Administração" />
+            </a>
         </Link>
     </>);
 }
 
-export default function MainMenu() {
+const MenuInsider = (keycloak: KeycloakInstance) => {
+    return (<>
+        <Link href="/app/boloes/">
+            <a><GbsButton type="text" text="Meus Bolões" /></a>
+        </Link>
+        <Link href="/app/perfil/">
+            <a><GbsButton type="text" text="Perfil" /></a>
+        </Link>
+        <GbsButton type="text" text="Sair" click={() => logoutUrl(keycloak)} />
+    </>);
+}
+
+export default function MainMenu(props?: MenuProps) {
 
     const { keycloak } = useKeycloak<KeycloakInstance>()
     const parsedToken: ParsedToken | undefined = keycloak?.tokenParsed
 
-    const buttom = keycloak?.authenticated ? (
+    let buttom = keycloak?.authenticated ? (
         MenuLogged(keycloak)
     ) : (
         MenuNotLogged(keycloak)
     );
 
+    if (keycloak?.authenticated && props.insider) {
+        buttom = MenuInsider(keycloak);
+    }
+
+
+
 
     return (
         <>
-            <Div bg="white" w="100vw" d="flex" justify="center"
+            <Div bg="background" w="100vw" d='flex' justify="center"
                 p={{ y: ".5rem" }}>
                 <Row w={{ xs: "100vw", lg: "80vw" }}>
                     <Col size={{ xs: 6, lg: 4 }}>
