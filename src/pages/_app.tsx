@@ -23,7 +23,7 @@ const theme = {
     background: '#F1F1FE',
     surface: '#fff',
     onPrimary: '#fff',
-    onSecondary: '#000',
+    onSecondary: '#fff',
     onBackground: '#C0C1C7'
   }
 }

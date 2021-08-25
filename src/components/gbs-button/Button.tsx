@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'atomize';
+import { Button, Icon } from 'atomize';
 import { createPublicKey } from 'crypto';
 import _Buttom from './Button';
 
@@ -8,7 +8,9 @@ import _Buttom from './Button';
 type ButtonType = {
     text: string,
     type?: string, // contained (default),  outlined, text
-    click?: Function
+    inverted?: boolean,
+    click?: Function,
+    icon?: string
 }
 
 class ButtonClass extends React.Component<ButtonType> {
@@ -16,28 +18,31 @@ class ButtonClass extends React.Component<ButtonType> {
     text: string;
 
     //#region
-    bg = 'primary'
-    hoverBg = 'pvariant'
+    bg: string
+    hoverBg: string
 
-    textColor = 'onPrimary'
-    hoverTextColor = 'onPrimary'
+    textColor: string
+    hoverTextColor: string
 
-    border = 'none'
-    borderColor = 'transparent'
-    hoverBorderColor = 'transparent'
+    border: string
+    borderColor: string
+    hoverBorderColor: string
     click: any;
+    icon: any = undefined;
     //#endregion
 
     constructor(props: ButtonType) {
         super(props);
         this.text = props.text;
         this.click = props.click;
+
+        //#region 
         switch (props.type) {
             case 'text': {
                 this.bg = 'transparent'
                 this.hoverBg = 'transparent'
-                this.textColor = 'primary'
-                this.hoverTextColor = 'secondary'
+                this.textColor = props.inverted ? 'secondary' : 'primary'
+                this.hoverTextColor = props.inverted ? 'primary' : 'secondary'
                 this.border = 'none'
                 this.borderColor = 'transparent'
                 this.hoverBorderColor = 'transparent'
@@ -46,14 +51,34 @@ class ButtonClass extends React.Component<ButtonType> {
             case 'outlined': {
                 this.bg = 'transparent'
                 this.hoverBg = 'transparent'
-                this.textColor = 'primary'
-                this.hoverTextColor = 'pvariant'
+                this.textColor = props.inverted ? 'secondary' : 'primary'
+                this.hoverTextColor = props.inverted ? 'svariant' : 'pvariant'
                 this.border = '1px solid'
-                this.borderColor = 'primary'
-                this.hoverBorderColor = 'pvariant'
+                this.borderColor = props.inverted ? 'secondary' : 'primary'
+                this.hoverBorderColor = props.inverted ? 'svariant' : 'pvariant'
                 break;
             }
+            default: {
+                this.bg = props.inverted ? 'secondary' : 'primary'
+                this.hoverBg = props.inverted ? 'svariant' : 'pvariant'
+
+                this.textColor = props.inverted ? 'onSecondary' : 'onPrimary'
+                this.hoverTextColor = props.inverted ? 'onSecondary' : 'onPrimary'
+
+                this.border = 'none'
+                this.borderColor = 'transparent'
+                this.hoverBorderColor = 'transparent'
+
+
+            }
         }
+        //#endregion
+
+        if (props.icon) {
+            this.icon = (<Icon name={props.icon} size="16px" color={this.textColor} m={{ r: "0.5rem" }}
+            />)
+        }
+
     }
 
     render() {
@@ -61,6 +86,8 @@ class ButtonClass extends React.Component<ButtonType> {
             <Button
                 p={{ x: '0.75rem' }}
                 m={{ l: '.5rem', r: '.5rem' }}
+                h={{ xs: '2rem' }}
+                prefix={this.icon}
                 bg={this.bg}
                 hoverBg={this.hoverBg}
                 textColor={this.textColor}

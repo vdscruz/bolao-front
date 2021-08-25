@@ -1,7 +1,7 @@
 import { Row, Col, Div, Button, Image } from 'atomize';
 import Link from 'next/link'
 import { useKeycloak } from '@react-keycloak/ssr'
-import type { KeycloakInstance } from 'keycloak-js'
+import type { KeycloakInstance, KeycloakLogoutOptions } from 'keycloak-js'
 import { ParsedToken } from '../../types/parsed-token';
 import { GbsButton } from '..';
 
@@ -12,12 +12,12 @@ interface MenuProps {
 
 function loginUrl(keycloak: KeycloakInstance) {
     if (keycloak) {
-        window.location.href = keycloak.createLoginUrl()
+        const redirectUri = 'http://localhost:3000/app/boloes/'
+        window.location.href = keycloak.createLoginUrl({ redirectUri })
     }
 }
 
 function cadastroUrl(keycloak: KeycloakInstance) {
-    console.log('outsider')
     if (keycloak) {
         window.location.href = keycloak.createAccountUrl()
     }
@@ -25,7 +25,8 @@ function cadastroUrl(keycloak: KeycloakInstance) {
 
 function logoutUrl(keycloak: KeycloakInstance) {
     if (keycloak) {
-        window.location.href = keycloak.createLogoutUrl();
+        const redirectUri = 'http://localhost:3000';
+        window.location.href = keycloak.createLogoutUrl({ redirectUri });
     }
 }
 

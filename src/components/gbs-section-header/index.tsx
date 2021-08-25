@@ -1,4 +1,5 @@
 import { Row, Col, Div, Button, Text } from 'atomize';
+import { GbsButton } from '..';
 
 export default function SectionHeader() {
     return (
@@ -14,7 +15,7 @@ export default function SectionHeader() {
             p={{ x: "1rem", y: "4rem" }}
         >
             <Row>
-                <Text tag="h1" textSize={{ lg: "display3", xs: "display1" }} textWeight="500" m={{ b: "1rem" }} textAlign="center">
+                <Text tag="h1" textSize={{ lg: "display3", xs: "display1" }} textWeight="500" m={{ b: "1rem" }} textAlign="center" >
                     Crie o seu Bolão, de Graça!
                 </Text>
             </Row>
@@ -24,33 +25,8 @@ export default function SectionHeader() {
                 </Text>
             </Row>
             <Row>
-                <Button
-                    h="3rem"
-                    p={{ x: "1.25rem" }}
-                    textSize="body"
-                    textColor="white"
-                    hoverTextColor="white"
-                    bg="info700"
-                    hoverBg="info900"
-                    m={{ r: "0.5rem" }}
-                >
-                    Iniciar agora
-                </Button>
-                <Button
-                    h="3rem"
-                    p={{ x: "1.25rem" }}
-                    textSize="body"
-                    textColor="gray900"
-                    hoverTextColor="black"
-                    bg="white"
-                    hoverBg="white"
-                    border="0.5px solid"
-                    borderColor="gray900"
-                    hoverBorderColor="black"
-                    m={{ r: "0.5rem" }}
-                >
-                    Veja uma demonstração
-                </Button>
+                <GbsButton text="Iniciar Agora" />
+                <GbsButton text="Demonstração" type="outlined" />
             </Row>
         </Div>
     );

@@ -6,9 +6,22 @@ import { GbsMenu } from ".."
 import { Div, Row, Col } from 'atomize'
 import { ParsedToken } from "../../types/parsed-token"
 
-const Layout = ({ children, pageContext }) => {
+type LayoutType = {
+    pageContext: any,
+    children: any
+}
+
+function Layout({ children, pageContext }) {
     const { keycloak } = useKeycloak<KeycloakInstance>()
-    const parsedToken: ParsedToken | undefined = keycloak?.tokenParsed
+
+    React.useLayoutEffect(() => {
+        if (keycloak?.authenticated == false) {
+            if (keycloak) {
+                window.location.href = keycloak.createLoginUrl()
+            }
+        }
+    })
+
 
     return (
         <>
