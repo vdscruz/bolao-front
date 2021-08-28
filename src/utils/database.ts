@@ -10,3 +10,7 @@ async function connect(): Promise<ConnectType> {
     const db = client.db('gbs-bolao');
     return { db, client };
 }
+
+export {
+    connect
+}

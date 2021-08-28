@@ -1,20 +1,33 @@
 import { useKeycloak } from "@react-keycloak/ssr";
 import { KeycloakInstance } from "keycloak-js";
+import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ErrorResponseType } from "../../types/error-response";
 import { ParsedToken } from "../../types/parsed-token";
+import { SuccessResponseType } from "../../types/success-response";
+import { connect } from '../../utils/database'
 
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorResponseType>): Promise<void> {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorResponseType | SuccessResponseType | any>): Promise<void> {
+
+    const collection = 'boloes';
+
 
     switch (req.method) {
 
         case "POST":
             {
+                // TODO: Validar antes se o body é do tipo bolao
+                const { db } = await connect();
+                const resVal = await db.collection(collection).insertOne(req.body);
+                res.status(200).json({ insertedId: resVal.insertedId });
                 break;
             }
         case "GET":
             {
+                const { db } = await connect();
+                const resVal = await db.collection(collection).find({ }).toArray();
+                res.status(200).json(resVal);
                 break;
             }
         case "PUT":

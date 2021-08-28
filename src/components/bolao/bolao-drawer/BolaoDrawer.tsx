@@ -39,6 +39,10 @@ class BolaoDrawer extends React.Component<BolaoDrawerType> {
         this.listaPremiacao = [{ key: 'Fixo', value: TipoPremiacao.Fixo }, { key: 'Percentual', value: TipoPremiacao.Percentual }];
     }
 
+    onSave() {
+        console.log('save');
+    }
+
     render() {
 
         const {
@@ -111,7 +115,7 @@ class BolaoDrawer extends React.Component<BolaoDrawerType> {
                 </Div>
                 <Div d="flex" justify="flex-end" p={{ b: "1rem" }}>
                     <GbsButton click={this.props.onClose} text="Cancelar" type="outlined" />
-                    <GbsButton click={this.props.onClose} text="Salvar" />
+                    <GbsButton click={() => this.onSave()} text="Salvar" />
                 </Div>
             </SideDrawer >
         );

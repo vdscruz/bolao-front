@@ -1,3 +1,3 @@
 export type ErrorResponseType = {
-    error: string
+    error?: string
 }
