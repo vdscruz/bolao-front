@@ -21,13 +21,13 @@ const BolaoLista = ({ isLoading, data, error }) => {
   if (data != undefined && data.status == 200) {
     const array: Bolao[] = data.data;
     return (
-      <Div d={{ md: 'flex' }}>
+      <Row>
         {array.map((obj, index) => (
-          <Div w={{ md: '50rem' }}>
+          <Col size={{ md: 4, xs: 12 }}>
             <BolaoItem key={index} />
-          </Div>
+          </Col>
         ))}
-      </Div>
+      </Row>
     );
   }
 
