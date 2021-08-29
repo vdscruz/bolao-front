@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Row, Col, Button, Div } from 'atomize'
+import { Text, Row, Col, Icon, Div } from 'atomize'
 import { GbsButton, GbsMenu } from '../../components';
 import { renderDeclarativeRules } from 'styletron-standard';
 import { BolaoDrawer } from '../../components/bolao';
@@ -21,18 +21,22 @@ const BolaoItem = ({ item }) => {
 }
 
 const BolaoLista = ({ isLoading, data, error }) => {
-    console.log(error);
-    console.log(data);
+
+    if (isLoading) {
+        return (<Icon name="Loading" size="20px" />)
+    }
 
     if (data != undefined && data.status == 200) {
         const array: Bolao[] = data.data;
         return (
-            <Div>{array.map((obj) => (<BolaoItem item={obj} />))}</Div>
+            <Div>{array.map((obj, index) => (<BolaoItem key={index} item={obj} />))}</Div>
         )
     }
 
     return (<h1>Sem dados...</h1>);
 }
+
+
 
 class BoloesPage extends React.Component {
     constructor(props) {
@@ -42,7 +46,10 @@ class BoloesPage extends React.Component {
         };
     }
 
-
+    close(mutate) {
+        this.setState({ showSideDrawer: false })
+        mutate()
+    }
 
     render() {
 
@@ -66,13 +73,18 @@ class BoloesPage extends React.Component {
                 </Div>
                 <Div p="1rem">
                     <GetSWR url={getUri}>
-                        {({ isLoading, data, error }) => {
-                            return (<BolaoLista isLoading={isLoading} data={data} error={error} />)
+                        {({ isLoading, data, error, mutate }) => {
+                            return (
+                                <>
+                                    <BolaoDrawer isOpen={showSideDrawer} onClose={() => this.close(mutate)} />
+                                    <BolaoLista isLoading={isLoading} data={data} error={error} />
+                                </>
+                            )
                         }}
                     </GetSWR>
                 </Div>
 
-                <BolaoDrawer isOpen={showSideDrawer} onClose={() => this.setState({ showSideDrawer: false })} />
+
             </>
         );
     }

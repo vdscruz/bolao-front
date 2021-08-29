@@ -4,11 +4,10 @@ import { StyleReset, ThemeProvider } from 'atomize';
 import { Provider as StyletronProvider } from 'styletron-react'
 import { styletron } from '../../styletron'
 import { SSRKeycloakProvider, SSRCookies } from '@react-keycloak/ssr'
-import keycloakCfg from '../../keycloak.config.json';
 import cookie from 'cookie'
 import type { IncomingMessage } from 'http'
-import { DefaultLayout } from '../components/gbs-layout';
-import { Router } from 'next/dist/client/router';
+import { DefaultLayout } from '../components/gbs-layout'
+import keycloakCfg from '../../keycloak.config.json'
 
 interface InitialProps {
   cookies: unknown
@@ -28,6 +27,8 @@ const theme = {
   }
 }
 
+
+
 function MyApp({ Component, pageProps, cookies, router }: AppProps & InitialProps) {
 
   let children = (
@@ -36,7 +37,7 @@ function MyApp({ Component, pageProps, cookies, router }: AppProps & InitialProp
 
   if (router.pathname.match(/app/)) {
     children = (
-      <DefaultLayout pageContext={{}}>
+      <DefaultLayout pageContext={{ }}>
         <Component {...pageProps} />
       </DefaultLayout>
     )
@@ -62,7 +63,7 @@ function MyApp({ Component, pageProps, cookies, router }: AppProps & InitialProp
 
 function parseCookies(req?: IncomingMessage) {
   if (!req || !req.headers) {
-    return {}
+    return { }
   }
   return cookie.parse(req.headers.cookie || '')
 }

@@ -2,10 +2,12 @@ import { useKeycloak } from "@react-keycloak/ssr";
 import { KeycloakInstance } from "keycloak-js";
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { StatusBolao } from "../../enums/status-bolao";
 import { ErrorResponseType } from "../../types/error-response";
 import { ParsedToken } from "../../types/parsed-token";
 import { SuccessResponseType } from "../../types/success-response";
 import { connect } from '../../utils/database'
+import { Bolao } from './../../model/bolao';
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorResponseType | SuccessResponseType | any>): Promise<void> {
@@ -19,7 +21,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             {
                 // TODO: Validar antes se o body é do tipo bolao
                 const { db } = await connect();
-                const resVal = await db.collection(collection).insertOne(req.body);
+                const bolao: Bolao = req.body;
+                bolao.dtCriacao = new Date();
+                bolao.status = StatusBolao.FechadoParaAposta;
+                const resVal = await db.collection(collection).insertOne(bolao);
                 res.status(200).json({ insertedId: resVal.insertedId });
                 break;
             }

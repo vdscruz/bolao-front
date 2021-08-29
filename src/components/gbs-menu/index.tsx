@@ -65,6 +65,7 @@ export default function MainMenu(props?: MenuProps) {
     const { keycloak } = useKeycloak<KeycloakInstance>()
     const parsedToken: ParsedToken | undefined = keycloak?.tokenParsed
 
+
     let buttom = keycloak?.authenticated ? (
         MenuLogged(keycloak)
     ) : (

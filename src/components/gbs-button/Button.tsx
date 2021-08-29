@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'atomize';
 import { createPublicKey } from 'crypto';
 import _Buttom from './Button';
+import { type } from './../../types/parsed-token';
 
 
 
@@ -10,7 +11,8 @@ type ButtonType = {
     type?: string, // contained (default),  outlined, text
     inverted?: boolean,
     click?: Function,
-    icon?: string
+    icon?: string,
+    submit?: boolean
 }
 
 class ButtonClass extends React.Component<ButtonType> {
@@ -96,6 +98,7 @@ class ButtonClass extends React.Component<ButtonType> {
                 borderColor={this.borderColor}
                 hoverBorderColor={this.hoverBorderColor}
                 onClick={this.click}
+                type={this.props.submit ? 'submit' : 'button'}
             >
                 {this.text}
             </Button >
